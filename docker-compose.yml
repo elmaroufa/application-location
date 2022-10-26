@@ -1,11 +1,11 @@
-version: '3.1'
+version: '3'
 
 services:
     api:
         build:
               context: .
               dockerfile: Dockerfile.dev
-        comand: python3 manage.py runserver 0.0.0.0:8000
+        command: python3 manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/app
         ports:
@@ -15,7 +15,7 @@ services:
         restart: "on-falure"
         depends_on:
             - postgres-db
-        network:
+        networks:
             - hospital-api
 
     postgres-db:

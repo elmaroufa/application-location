@@ -10,22 +10,27 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+from dbm.dumb import _Database
 from pathlib import Path
+from django import db
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
+env = environ.Env(DEBUG=(bool, False))
+environ.Env.read_env(env_file=".env")
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'skk^(_=%3#li910*6kx3y8#i-ocpw#tce%_e8+u_sxh2@lv^nl'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -80,9 +85,13 @@ WSGI_APPLICATION = 'hospitals_api.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "NAME": env("POSTGRES_DBNAME"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASS"),
+        "HOST": env("PG_HOST"),
+        "PORT": env("PG_PORT"),
     }
 }
 
