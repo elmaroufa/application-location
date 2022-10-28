@@ -12,7 +12,7 @@ services:
             - 8000:8000
         env_file:
             - .env
-        restart: "on-falure"
+        restart: "on-failure"
         depends_on:
             - postgres-db
         networks:
